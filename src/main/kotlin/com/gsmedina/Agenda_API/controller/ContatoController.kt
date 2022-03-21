@@ -3,6 +3,7 @@ package com.gsmedina.Agenda_API.controller
 import com.gsmedina.Agenda_API.dto.ContatoDto
 import com.gsmedina.Agenda_API.model.Contato
 import com.gsmedina.Agenda_API.reponse.Response
+import com.gsmedina.Agenda_API.repository.ContatoRepository
 import com.gsmedina.Agenda_API.service.ContatoService
 import com.gsmedina.Agenda_API.view.ContatoView
 import org.springframework.http.ResponseEntity
@@ -27,7 +28,17 @@ class ContatoController(val contatoService: ContatoService) {
 
     @GetMapping("/{id}")
     fun mostrar(@PathVariable id:Long): Contato?{
-        TODO()
+        return  contatoService.listaPorID(id)
+    }
+
+    @GetMapping("/nome/{nome}")
+    fun mostrarPorNome(@PathVariable nome: String): List<Contato>?{
+        return contatoService.listaPorNome(nome)
+    }
+
+    @GetMapping("/email/{email}")
+    fun mostrarPorEmail(@PathVariable email: String): List<Contato>?{
+        return contatoService.listaPorEmail(email)
     }
 
     @PostMapping
@@ -41,18 +52,19 @@ class ContatoController(val contatoService: ContatoService) {
 
         val contato: Contato = contatoService.salvar(contatoDto)
         val contatoView: ContatoView = ContatoView(contato.nome, contato.numero, contato.email, contato.id)
-
+        response.data = contatoView
         return ResponseEntity.ok(response)
 
     }
 
-    @DeleteMapping
-    fun deletar(){
-        TODO()
+    @DeleteMapping("/{id}")
+    fun deletar(@PathVariable id: Long){
+        contatoService.deletar(id)
+
     }
 
-    @PutMapping
-    fun atualizar(){
-        TODO()
+    @PutMapping("/{id}")
+    fun atualizar(@PathVariable id: Long, @RequestBody contatoDto: ContatoDto){
+        
     }
 }

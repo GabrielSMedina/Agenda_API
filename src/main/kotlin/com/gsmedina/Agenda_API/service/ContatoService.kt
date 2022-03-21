@@ -12,8 +12,24 @@ class ContatoService(val contatoRepository: ContatoRepository) {
         return contatoRepository.findAll()
     }
 
+    fun listaPorNome(nome: String): List<Contato>?{
+        return contatoRepository.findBynome(nome)
+    }
+
+    fun listaPorEmail(email: String): List<Contato>?{
+        return contatoRepository.findByemail(email)
+    }
+
+    fun listaPorID(id: Long): Contato?{
+        return contatoRepository.findByid(id)
+    }
+
     fun salvar(contatoDto: ContatoDto): Contato{
         val contato: Contato = Contato(contatoDto.nome, contatoDto.numero, contatoDto.email)
         return contatoRepository.save(contato)
+    }
+
+    fun deletar(id: Long){
+        contatoRepository.deleteById(id)
     }
 }
