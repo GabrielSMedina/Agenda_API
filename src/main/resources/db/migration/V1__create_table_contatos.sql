@@ -1,0 +1,1 @@
+CREATE TABLE contatos(nome varchar(255) NOT NULL, numero varchar(20) NOT NULL, email varchar(255), id serial);
