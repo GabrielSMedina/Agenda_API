@@ -64,7 +64,19 @@ class ContatoController(val contatoService: ContatoService) {
     }
 
     @PutMapping("/{id}")
-    fun atualizar(@PathVariable id: Long, @RequestBody contatoDto: ContatoDto){
-        
+    fun atualizar(@PathVariable id: Long, @RequestBody contatoDto: ContatoDto, result: BindingResult):
+            ResponseEntity<Response<ContatoView>> {
+        val response: Response<ContatoView> = Response<ContatoView>()
+
+        if(result.hasErrors()) {
+            result.allErrors.forEach { erro -> erro.defaultMessage?.let { response.erros.add(it) } }
+            return ResponseEntity.badRequest().body(response)
+        }
+
+        val contato: Contato = Contato(contatoDto.nome, contatoDto.numero, contatoDto.email, id)
+        contatoService.atualizar(contato)
+        val contatoView: ContatoView = ContatoView(contato.nome, contato.numero, contato.email, contato.id)
+        response.data = contatoView
+        return ResponseEntity.ok(response)
     }
 }
