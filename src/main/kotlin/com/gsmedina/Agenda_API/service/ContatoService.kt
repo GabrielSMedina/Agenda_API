@@ -32,4 +32,8 @@ class ContatoService(val contatoRepository: ContatoRepository) {
     fun deletar(id: Long){
         contatoRepository.deleteById(id)
     }
+
+    fun atualizar(contato: Contato){
+        contatoRepository.save(contato)
+    }
 }
